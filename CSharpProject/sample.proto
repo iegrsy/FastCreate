@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package sample;
+
+service SampleService {
+    rpc StreamText(stream Text) returns (Dummy) {}
+}
+
+message Dummy {
+    int32 dummy = 1;
+}
+
+message Text {
+    string txt = 1;
+}
