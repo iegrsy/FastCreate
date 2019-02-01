@@ -1,0 +1,8 @@
+# qtcreator generated files
+*.pro.user*
+
+# Build dir
+/build
+
+# Proto outputs
+*.pb.*
