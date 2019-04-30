@@ -17,6 +17,7 @@ namespace CSharpProject
             DiagnosticService.DiagnosticServiceClient client = new DiagnosticService.DiagnosticServiceClient(channel);
 
             new Task(async () => { await streamStatusAsync(client); }).Start();
+            //getStatus(client);
 
             System.Console.ReadKey();
         }
