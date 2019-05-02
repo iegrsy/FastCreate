@@ -20,7 +20,7 @@ service DiagnosticService {
 	rpc GetDiagnosticStatus(DiagnosticQ) returns (DiagnosticInfo) {}
 }
 
-message	DiagnosticQ {
+message DiagnosticQ {
 	int32 value = 1;
 }
 
@@ -34,9 +34,10 @@ message ElementQueue {
 	float fps = 1;
 	int64 bitrate = 2;
 	int32 sendCount = 3;
-	int64 elapsedTime = 4; 
+	int64 elapsedTime = 4;
 	int32 bufferCount = 5;
 	int32 receivedCount = 6;
+	int64 totalSize = 7;
 }
 
 message Node {
@@ -52,6 +53,8 @@ message Node {
 
 message DiagnosticInfo {
 	repeated Node nodes = 1;
+	int64 latency = 2;
+	int64 totalUseMemory = 3;
 }
 
 //service ekleyebilirsin 2. servicisi 
