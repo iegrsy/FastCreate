@@ -1,6 +1,6 @@
 ﻿using System;
 using Grpc.Core;
-using AlgorithmCommunication;
+using Aw;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,8 +12,8 @@ namespace CSharpProject
 
         static void Main(string[] args)
         {
-            string _host = "192.170.0.28";
-            int _port = 2121;
+            string _host = "10.5.179.29";
+            int _port = 50059;
 
             Channel channel = new Channel(_host + ":" + _port, ChannelCredentials.Insecure);
             DiagnosticService.DiagnosticServiceClient client = new DiagnosticService.DiagnosticServiceClient(channel);
