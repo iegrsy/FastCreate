@@ -6,8 +6,8 @@ all:
 	echo "finish"
 clean:
 	dotnet clean
-	rm Sample.cs
-	rm SampleGrpc.cs
+	rm Utestp.cs
+	rm UtestpGrpc.cs
 	rm -rf bin obj
 run:
 	dotnet run

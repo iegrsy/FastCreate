@@ -1,0 +1,146 @@
+syntax = "proto3";
+
+package utest;
+
+import "google/protobuf/empty.proto";
+
+service DeviceService {
+    rpc GetRealTimeValues(google.protobuf.Empty) returns (RealTimeValues) {}
+
+    rpc Start(google.protobuf.Empty) returns (CommandResult) {}
+    rpc Stop(google.protobuf.Empty) returns (CommandResult) {}
+    rpc Pause(google.protobuf.Empty) returns (CommandResult) {}
+    rpc Unload(google.protobuf.Empty) returns (CommandResult) {}
+
+    rpc GetChannels(google.protobuf.Empty) returns (GetChannelsResponse) {}
+    rpc SetChannel(SetChannelRequest) returns (CommandResult) {}
+
+    rpc GetIOStatus(google.protobuf.Empty) returns (IOStatusResponse) {}
+    rpc SetIOStatus(IOStatusResponse) returns (CommandResult) {}
+
+    rpc GetLogValues(google.protobuf.Empty) returns (RealTimeValues) {}
+    rpc GetStatus(google.protobuf.Empty) returns (GetStatusResponse) {}
+    rpc GetDiagnostics(google.protobuf.Empty) returns (GetDiagnosticsResponse) {}
+    rpc GetFirmware(google.protobuf.Empty) returns (GetFirmwareResponse) {}
+
+    rpc SendCustomCommand(CustomCommandRequest) returns (CustomCommandResponse) {}
+    rpc WriteControllerRegister(RegisterWriteRequest) returns (CommandResult) {}
+}
+
+message RegisterWriteRequest {
+    int32 file = 1;
+    int32 offset = 2;
+    repeated float valuesf = 3;
+    repeated uint32 valuesi = 4;
+}
+
+message IOInfo {
+    bool input = 1;
+    bool high = 2;
+    int32 index = 3;
+    string name = 4;
+}
+
+message IOStatusResponse {
+    repeated IOInfo ioinfo = 1;
+}
+
+message CustomCommandRequest {
+    int32 command_id = 1;
+    repeated float parsf = 2;
+    repeated int32 parsi = 3;
+    int32 axis = 4;
+}
+
+message CustomCommandResponse {
+    int32 return_code = 1;
+    repeated float valsf = 2;
+    repeated int32 valsi = 3;
+}
+
+message GetStatusResponse {
+    enum RunState {
+        RUN_STATE_START = 0;
+        RUN_STATE_STOP = 1;
+        RUN_STATE_PAUSE = 2;
+    }
+    RunState run_state = 1;
+}
+
+message GetDiagnosticsResponse {
+    int32 err_status = 1;
+}
+
+message GetFirmwareResponse {
+    string delta_fw = 1;
+    string program_fw = 2;
+    string commlib_fw = 3;
+}
+
+message CommandResult {
+    int32 err = 1;
+}
+
+message RealTimeValues {
+    float load = 1;
+    float displacement = 2;
+    float displacement_ext = 3;
+    float stress = 4;
+    float strain = 5;
+}
+
+message TensileParameters {
+    float break_detection_percentage = 1; //break detection in percentage (%)
+    float break_detection = 2; //what is this???
+    float zero_suppression = 3; //Zero zero_suppression point in kN
+    float max_load = 4; //max load protection
+}
+
+message SpecimenParameters {
+    enum SpecimenType {
+        SPECIMEN_RECTANGULAR = 0;
+        SPECIMEN_CIRCULAR = 1;
+    }
+    SpecimenType type = 1;
+    //all units are in mm
+    float width = 2;
+    float height = 3;
+    float length = 4;
+    float radius = 5;
+    float area = 6; //if zero, will be calculated from dimensions
+}
+
+message TestParameters {
+    enum ControlType {
+        CONTROL_LOAD = 0;
+        CONTROL_DISPLACEMENT = 1;
+    }
+    enum TestType {
+        TENSILE_ASTM_E8 = 0;
+    }
+    ControlType control_type = 1;
+    TestType test_type = 2;
+    float speed = 3; //kN/sec for load control, mm/sec for displacement control
+    SpecimenParameters specimen_parameters = 4;
+    TensileParameters tensile_parameters = 5;
+}
+
+message CalibrationPoint {
+    float raw_value = 1;
+    float cal_value = 2;
+}
+
+message ChannelInfo {
+    float raw_value = 1;
+    float cal_value = 2;
+    repeated CalibrationPoint calibration_points = 3;
+}
+
+message GetChannelsResponse {
+    repeated ChannelInfo channels = 1;
+}
+
+message SetChannelRequest {
+    int32 index = 1;
+    ChannelInfo channel = 2;
+}
