@@ -1,0 +1,20 @@
+version: '2'
+services:
+  server:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - "0.0.0.0:60151:60151"
+    restart: always
+
+  envoy:
+    build:
+      context: ./envoy_docker/
+      dockerfile: ./envoy.Dockerfile
+    ports:
+      - "0.0.0.0:2828:2828"
+      - "0.0.0.0:9091:9091"
+    links:
+      - server
+    restart: always
